@@ -13,6 +13,7 @@ contract Keyboards {
     KeyboardKind kind;
     bool isPBT;
     string filter;
+    address owner;
   }
 
   Keyboard[] public createdKeybaords;
@@ -25,9 +26,15 @@ contract Keyboards {
     Keyboard memory newKind = Keyboard({
       kind: _kind,
       isPBT: _isPBT,
-      filter: _filter
+      filter: _filter,
+      owner: msg.sender
     });
 
     createdKeybaords.push(newKind);
+  }
+
+  function tip(uint _index) public payable {
+    address payable owner = payable(createdKeybaords[_index].owner);
+    owner.transfer(msg.value);
   }
 }
